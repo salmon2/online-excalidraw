@@ -3,7 +3,11 @@ import { useState, useEffect, useMemo } from 'react';
 import * as Styled from './style';
 import cloneDeep from 'lodash/cloneDeep';
 
-const ExcalidrawComponent = () => {
+const ExcalidrawComponent = ({
+  setMoveElements = () => {},
+  setAddElements = () => {},
+  setRemoveElements = () => {},
+}) => {
   const [Excalidraw, setExcalidraw] = useState(null);
 
   const [mouseButton, setMouseButton] = useState('up');
@@ -52,8 +56,9 @@ const ExcalidrawComponent = () => {
         (prevElement) => prevElement?.id === changeElement?.id,
       );
       return (
-        prevChangeElement?.x !== changeElement?.x ||
-        prevChangeElement?.y !== changeElement?.y
+        prevChangeElement &&
+        (prevChangeElement?.x !== changeElement?.x ||
+          prevChangeElement?.y !== changeElement?.y)
       );
     });
   }, [changeElements]);
@@ -64,35 +69,36 @@ const ExcalidrawComponent = () => {
   }, [changeElements]);
 
   useEffect(() => {
-    console.log('addElements', addElements);
+    // console.log('addElements', addElements);
+    setAddElements(addElements);
   }, [addElements]);
 
   useEffect(() => {
-    console.log('removeElements', removeElements);
+    // console.log('removeElements', removeElements);
+    setRemoveElements(removeElements);
   }, [removeElements]);
 
   useEffect(() => {
-    console.log('moveElements', moveElements);
+    // console.log('moveElements', moveElements);
+    setMoveElements(moveElements);
   }, [moveElements]);
 
   return (
     <>
       <Styled.ExcalidrawLayout>
-        <div style={{ width: '50%', height: '50%', border: 'solid' }}>
-          {Excalidraw && (
-            <Excalidraw
-              onPointerUpdate={({ button }) => {
-                if (button != mouseButton) {
-                  if (button == 'up' && mouseButton == 'down') {
-                    setOnChangeFlag(!onChangeFlag);
-                  }
-                  setMouseButton(button);
+        {Excalidraw && (
+          <Excalidraw
+            onPointerUpdate={({ button }) => {
+              if (button != mouseButton) {
+                if (button == 'up' && mouseButton == 'down') {
+                  setOnChangeFlag(!onChangeFlag);
                 }
-              }}
-              ref={(api) => setExcalidrawAPI(api)}
-            />
-          )}
-        </div>
+                setMouseButton(button);
+              }
+            }}
+            ref={(api) => setExcalidrawAPI(api)}
+          />
+        )}
       </Styled.ExcalidrawLayout>
     </>
   );
