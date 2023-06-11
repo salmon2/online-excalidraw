@@ -1,10 +1,9 @@
-import Button from '@components/button'
-
+import ExcalidrawComponent from '@components/excalidraw';
 
 export default function Home() {
   return (
-    (<div style={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
-    <Button/>
-  </div>)
-  )
+    <>
+      <ExcalidrawComponent />
+    </>
+  );
 }
