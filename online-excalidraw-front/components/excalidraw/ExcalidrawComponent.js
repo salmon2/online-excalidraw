@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import * as Styled from './style';
+import cloneDeep from 'lodash/cloneDeep';
 
 const ExcalidrawComponent = () => {
   const [Excalidraw, setExcalidraw] = useState(null);
@@ -17,10 +18,13 @@ const ExcalidrawComponent = () => {
     );
   }, []);
 
-  const changeElements = useMemo(
-    () => excalidrawAPI?.getSceneElementsIncludingDeleted() || [],
-    [onChangeFlag],
-  );
+  const changeElements = useMemo(() => {
+    const Elemnts = cloneDeep(
+      excalidrawAPI?.getSceneElementsIncludingDeleted(),
+    );
+
+    return [...(Elemnts || [])];
+  }, [onChangeFlag]);
 
   const addElements = useMemo(() => {
     return changeElements.filter((changeElement) => {
@@ -42,18 +46,34 @@ const ExcalidrawComponent = () => {
     });
   }, [changeElements]);
 
-  useEffect(() => {
-    // console.log('changeElements', changeElements);
-    setPrevChangeElements([...changeElements]);
+  const moveElements = useMemo(() => {
+    return changeElements.filter((changeElement) => {
+      const prevChangeElement = preveChangeElements.find(
+        (prevElement) => prevElement?.id === changeElement?.id,
+      );
+      return (
+        prevChangeElement?.x !== changeElement?.x ||
+        prevChangeElement?.y !== changeElement?.y
+      );
+    });
   }, [changeElements]);
 
-  //   useEffect(() => {
-  //     console.log('addElements', addElements);
-  //   }, [addElements]);
+  useEffect(() => {
+    const data = cloneDeep(changeElements);
+    setPrevChangeElements([...data]);
+  }, [changeElements]);
 
-  //   useEffect(() => {
-  //     console.log('removeElements', removeElements);
-  //   }, [removeElements]);
+  useEffect(() => {
+    console.log('addElements', addElements);
+  }, [addElements]);
+
+  useEffect(() => {
+    console.log('removeElements', removeElements);
+  }, [removeElements]);
+
+  useEffect(() => {
+    console.log('moveElements', moveElements);
+  }, [moveElements]);
 
   return (
     <>
