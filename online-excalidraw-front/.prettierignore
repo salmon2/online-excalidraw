@@ -1,0 +1,9 @@
+appspec
+node_modules
+public
+.next
+styles
+tailwind-theme
+
+*.html
+*.sh
