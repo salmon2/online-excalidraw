@@ -8,6 +8,15 @@ module.exports = (phase) => {
     images: {
       loaderFile: './image-loader.js',
     },
+    async rewrites() {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'http://localhost:8080/api/:path*',
+          basePath: false,
+        },
+      ];
+    },
     eslint: {
       ignoreDuringBuilds: true,
     },
