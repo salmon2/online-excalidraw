@@ -21,7 +21,7 @@ public class CanvasController {
     }
 
     @MessageMapping("/send/test")
-    @SendTo("topic/test")
+    @SendTo("/topic/test")
     public String testMessage(@Payload String msg){
         log.info("test = {}", msg);
         return msg;
