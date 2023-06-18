@@ -30,6 +30,21 @@ const subScripAddElement = (stomp, roomId, callBackFunc) => {
   });
 };
 
+const subScripRemoveElement = (stomp, roomId, callBackFunc) => {
+  stomp.current.subscribe(`/topic/remove/${roomId}`, (response) => {
+    try {
+      const responseJSON = JSON.parse(response?.body);
+      const result = {
+        roomId: responseJSON?.roomId,
+        element: JSON.parse(responseJSON.element),
+      };
+      callBackFunc(result);
+    } catch (e) {
+      console.log('e', e);
+    }
+  });
+};
+
 export const useSocketTest = () => {
   const ws = useRef(null);
   const stomp = useRef(null);
@@ -63,7 +78,7 @@ export const useCanvasSocket = ({ roomId }) => {
   const ws = useRef(null);
   const stomp = useRef(null);
   const [addElement, setAddElement] = useState();
-
+  const [removeElement, setRemoveElement] = useState();
   useEffect(() => {
     try {
       if (roomId) {
@@ -76,6 +91,7 @@ export const useCanvasSocket = ({ roomId }) => {
 
         stomp.current.connect({}, () => {
           subScripAddElement(stomp, roomId, setAddElement);
+          subScripRemoveElement(stomp, roomId, setRemoveElement);
         });
       }
     } catch (e) {
@@ -100,6 +116,23 @@ export const useCanvasSocket = ({ roomId }) => {
     [roomId],
   );
 
+  const sendRemoveElement = useCallback(
+    (removeElement) => {
+      if (!roomId) return;
+      try {
+        const request = JSON.stringify({
+          roomId: roomId,
+          element: JSON.stringify([...removeElement]),
+        });
+
+        stomp.current.send(`/send/remove/${roomId}`, {}, request);
+      } catch (e) {
+        console.log('e', e);
+      }
+    },
+    [roomId],
+  );
+
   const useSendAddElement = (addElements) => {
     useEffect(() => {
       if (addElements?.length > 0) {
@@ -108,10 +141,22 @@ export const useCanvasSocket = ({ roomId }) => {
     }, [addElements]);
   };
 
+  const useSendRemoveElement = (removeElements) => {
+    useEffect(() => {
+      if (removeElements?.length > 0) {
+        sendRemoveElement(removeElements);
+      }
+    }, [removeElements]);
+  };
+
   return {
-    addElement: addElement,
+    responseAddElement: addElement,
     sendAddElement: sendAddElement,
     useSendAddElement: useSendAddElement,
+
+    responseRemoveElement: removeElement,
+    sendRemoveElement: sendRemoveElement,
+    useSendRemoveElement: useSendRemoveElement,
   };
 };
 
@@ -131,4 +176,22 @@ export const useDrawElement = (responseAddElement, excalidrawAPI) => {
       excalidrawAPI?.updateScene(sceneData);
     }
   }, [responseAddElement]);
+};
+
+export const useRemoveElement = (responseRemoveElement, excalidrawAPI) => {
+  useEffect(() => {
+    if (responseRemoveElement?.length > 0) {
+      const elementList = excalidrawAPI?.getSceneElementsIncludingDeleted();
+
+      const difference = elementList.filter((item1) => {
+        return !responseRemoveElement.some((item2) => item2.id === item1.id);
+      });
+
+      const sceneData = {
+        elements: [...difference],
+      };
+
+      excalidrawAPI?.updateScene(sceneData);
+    }
+  }, [responseRemoveElement]);
 };

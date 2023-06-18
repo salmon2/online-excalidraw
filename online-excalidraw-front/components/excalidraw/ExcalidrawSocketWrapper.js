@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import ExcalidrawComponent from './ExcalidrawComponent';
-import { useApiTest } from '@utils/hooks/useApiTest';
-import { useCanvasSocket, useSocketTest } from '@utils/hooks/useCanvasSocket';
-import Button from '@components/button';
+
+import { useCanvasSocket } from '@utils/hooks/useCanvasSocket';
 
 const ExcalidrawSocketWrapper = () => {
   const [addElements, setAddElements] = useState();
   const [removeElements, setRemoveElements] = useState();
   const [moveElements, setMoveElements] = useState();
 
-  const { addElement: responseAddElement, useSendAddElement } = useCanvasSocket(
-    {
-      roomId: 1,
-    },
-  );
+  const {
+    responseAddElement,
+    useSendAddElement,
+    responseRemoveElement,
+    useSendRemoveElement,
+  } = useCanvasSocket({
+    roomId: 1,
+  });
 
   useEffect(
-    () => console.log('responseAddElement', responseAddElement),
-    [responseAddElement],
+    () => console.log('removeElements', removeElements),
+    [removeElements],
   );
 
   useSendAddElement(addElements);
+
+  useSendRemoveElement(removeElements);
 
   return (
     <>
@@ -29,6 +33,7 @@ const ExcalidrawSocketWrapper = () => {
         setRemoveElements={setRemoveElements}
         setMoveElements={setMoveElements}
         responseAddElement={responseAddElement?.element}
+        responseRemoveElement={responseRemoveElement?.element}
       />
       {/* <div style={{ marginTop: '15px' }}>
         <Button onClick={() => sendAddElement({ foo: 'bar' })}>

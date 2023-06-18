@@ -31,7 +31,14 @@ public class CanvasController {
     /** ------실시간 관련-------- **/
     @MessageMapping("/send/add/{roomId}")
     @SendTo("/topic/add/{roomId}")
-    public CanvasElementList sendMessage(@Payload CanvasElementList canvasElementList) {
+    public CanvasElementList sendAddMessage(@Payload CanvasElementList canvasElementList) {
+        log.info("canvasElementList = {}", canvasElementList);
+        return canvasElementList;
+    }
+
+    @MessageMapping("/send/remove/{roomId}")
+    @SendTo("/topic/remove/{roomId}")
+    public CanvasElementList sendRemoveMessage(@Payload CanvasElementList canvasElementList) {
         log.info("canvasElementList = {}", canvasElementList);
         return canvasElementList;
     }

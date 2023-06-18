@@ -2,12 +2,13 @@ import React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import * as Styled from './style';
 import cloneDeep from 'lodash/cloneDeep';
-import { useDrawElement } from '@utils/hooks/useCanvasSocket';
+import { useDrawElement, useRemoveElement } from '@utils/hooks/useCanvasSocket';
 const ExcalidrawComponent = ({
   setMoveElements = () => {},
   setAddElements = () => {},
   setRemoveElements = () => {},
   responseAddElement,
+  responseRemoveElement,
 }) => {
   const [Excalidraw, setExcalidraw] = useState(null);
 
@@ -85,6 +86,8 @@ const ExcalidrawComponent = ({
   }, [moveElements]);
 
   useDrawElement(responseAddElement, excalidrawAPI);
+
+  useRemoveElement(responseRemoveElement, excalidrawAPI);
 
   return (
     <>
