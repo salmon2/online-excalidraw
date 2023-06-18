@@ -29,8 +29,8 @@ public class CanvasController {
 
 
     /** ------실시간 관련-------- **/
-    @MessageMapping("/send/{roomId}")
-    @SendTo("/topic/{roomId}")
+    @MessageMapping("/send/add/{roomId}")
+    @SendTo("/topic/add/{roomId}")
     public CanvasElementList sendMessage(@Payload CanvasElementList canvasElementList) {
         log.info("canvasElementList = {}", canvasElementList);
         return canvasElementList;

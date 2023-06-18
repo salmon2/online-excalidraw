@@ -1,8 +1,8 @@
 import React from 'react';
 import * as Styled from './style';
 
-const Button = ({ children = 'Default Button' }) => {
-  return <Styled.Button>{children}</Styled.Button>;
+const Button = ({ onClick = () => {}, children = 'Default Button' }) => {
+  return <Styled.Button onClick={onClick}>{children}</Styled.Button>;
 };
 
 export default Button;

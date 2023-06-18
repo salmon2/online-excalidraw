@@ -13,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CanvasElementList {
     @Id @GeneratedValue
-    private Long Id;
-    private List<String> element;
+    private Long roomId;
+    private String element;
 }

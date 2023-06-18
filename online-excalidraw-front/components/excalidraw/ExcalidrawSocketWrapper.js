@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import ExcalidrawComponent from './ExcalidrawComponent';
 import { useApiTest } from '@utils/hooks/useApiTest';
-import { useTestConnet } from '@utils/hooks/useCanvasSocket';
+import { useCanvasSocket, useSocketTest } from '@utils/hooks/useCanvasSocket';
+import Button from '@components/button';
 
 const ExcalidrawSocketWrapper = () => {
   const [addElements, setAddElements] = useState();
   const [removeElements, setRemoveElements] = useState();
   const [moveElements, setMoveElements] = useState();
 
-  const [socketData, setSocketData] = useState();
+  const { addElement: responseAddElement, useSendAddElement } = useCanvasSocket(
+    {
+      roomId: 1,
+    },
+  );
 
-  useTestConnet(setSocketData);
-  useEffect(() => console.log('socketD', socketData), [socketData]);
+  useEffect(
+    () => console.log('responseAddElement', responseAddElement),
+    [responseAddElement],
+  );
+
+  useSendAddElement(addElements);
 
   return (
     <>
@@ -19,7 +28,13 @@ const ExcalidrawSocketWrapper = () => {
         setAddElements={setAddElements}
         setRemoveElements={setRemoveElements}
         setMoveElements={setMoveElements}
+        responseAddElement={responseAddElement?.element}
       />
+      {/* <div style={{ marginTop: '15px' }}>
+        <Button onClick={() => sendAddElement({ foo: 'bar' })}>
+          go canvas
+        </Button>
+      </div> */}
     </>
   );
 };
