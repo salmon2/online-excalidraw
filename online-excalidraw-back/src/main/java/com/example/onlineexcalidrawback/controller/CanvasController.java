@@ -32,22 +32,20 @@ public class CanvasController {
     @MessageMapping("/send/add/{roomId}")
     @SendTo("/topic/add/{roomId}")
     public CanvasElementList sendAddMessage(@Payload CanvasElementList canvasElementList) {
-        log.info("canvasElementList = {}", canvasElementList);
+        log.info("add canvasElementList = {}", canvasElementList);
         return canvasElementList;
     }
 
     @MessageMapping("/send/remove/{roomId}")
     @SendTo("/topic/remove/{roomId}")
     public CanvasElementList sendRemoveMessage(@Payload CanvasElementList canvasElementList) {
-        log.info("canvasElementList = {}", canvasElementList);
+        log.info("remove canvasElementList = {}", canvasElementList);
         return canvasElementList;
     }
-
-    @MessageMapping("/send/delete/{roomId}")
-    @SendTo("/topic/delete/{roomId}")
-    public CanvasElementList deleteMessage(@Payload CanvasElementList canvasElementList) {
-        log.info("canvasElementList = {}", canvasElementList);
+    @MessageMapping("/send/move/{roomId}")
+    @SendTo("/topic/move/{roomId}")
+    public CanvasElementList sendMoveMessage(@Payload CanvasElementList canvasElementList) {
+        log.info("move canvasElementList = {}", canvasElementList);
         return canvasElementList;
     }
-
 }

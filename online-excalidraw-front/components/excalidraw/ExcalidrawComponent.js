@@ -2,13 +2,19 @@ import React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import * as Styled from './style';
 import cloneDeep from 'lodash/cloneDeep';
-import { useDrawElement, useRemoveElement } from '@utils/hooks/useCanvasSocket';
+import {
+  useDrawElement,
+  useMoveElement,
+  useRemoveElement,
+} from '@utils/hooks/useCanvasSocket';
+import Button from '@components/button';
 const ExcalidrawComponent = ({
   setMoveElements = () => {},
   setAddElements = () => {},
   setRemoveElements = () => {},
   responseAddElement,
   responseRemoveElement,
+  responseMoveElement,
 }) => {
   const [Excalidraw, setExcalidraw] = useState(null);
 
@@ -86,8 +92,10 @@ const ExcalidrawComponent = ({
   }, [moveElements]);
 
   useDrawElement(responseAddElement, excalidrawAPI);
-
   useRemoveElement(responseRemoveElement, excalidrawAPI);
+  useMoveElement(responseMoveElement, excalidrawAPI);
+
+  const [canvasData, setCanvasData] = useState();
 
   return (
     <>
@@ -106,6 +114,18 @@ const ExcalidrawComponent = ({
           />
         )}
       </Styled.ExcalidrawLayout>
+      <div style={{ marginTop: '15px' }}>
+        <Button
+          onClick={() => {
+            console.log(
+              'canvas',
+              excalidrawAPI?.getSceneElementsIncludingDeleted(),
+            );
+            console.log('file', excalidrawAPI?.getFiles());
+          }}>
+          캔버스 데이터 보기
+        </Button>
+      </div>
     </>
   );
 };

@@ -19,7 +19,6 @@
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@apis/*": ["apis/*"],
-      "@hooks/*": ["hooks/*"],
       "@context/*": ["context/*"],
       "@styles/*": ["styles/*"],
     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ExcalidrawComponent from './ExcalidrawComponent';
 
 import { useCanvasSocket } from '@utils/hooks/useCanvasSocket';
@@ -13,33 +13,28 @@ const ExcalidrawSocketWrapper = () => {
     useSendAddElement,
     responseRemoveElement,
     useSendRemoveElement,
+    responseMoveElement,
+    useSendMoveElement,
+    error,
   } = useCanvasSocket({
     roomId: 1,
   });
 
-  useEffect(
-    () => console.log('removeElements', removeElements),
-    [removeElements],
-  );
-
   useSendAddElement(addElements);
-
   useSendRemoveElement(removeElements);
+  useSendMoveElement(moveElements);
 
   return (
     <>
+      {error && error}
       <ExcalidrawComponent
         setAddElements={setAddElements}
         setRemoveElements={setRemoveElements}
         setMoveElements={setMoveElements}
         responseAddElement={responseAddElement?.element}
         responseRemoveElement={responseRemoveElement?.element}
+        responseMoveElement={responseMoveElement?.element}
       />
-      {/* <div style={{ marginTop: '15px' }}>
-        <Button onClick={() => sendAddElement({ foo: 'bar' })}>
-          go canvas
-        </Button>
-      </div> */}
     </>
   );
 };

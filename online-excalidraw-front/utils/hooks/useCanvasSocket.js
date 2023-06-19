@@ -45,6 +45,21 @@ const subScripRemoveElement = (stomp, roomId, callBackFunc) => {
   });
 };
 
+const subScripMoveElement = (stomp, roomId, callBackFunc) => {
+  stomp.current.subscribe(`/topic/move/${roomId}`, (response) => {
+    try {
+      const responseJSON = JSON.parse(response?.body);
+      const result = {
+        roomId: responseJSON?.roomId,
+        element: JSON.parse(responseJSON.element),
+      };
+      callBackFunc(result);
+    } catch (e) {
+      console.log('e', e);
+    }
+  });
+};
+
 export const useSocketTest = () => {
   const ws = useRef(null);
   const stomp = useRef(null);
@@ -74,11 +89,15 @@ export const useSocketTest = () => {
   };
 };
 
-export const useCanvasSocket = ({ roomId }) => {
+export const useCanvasSocket = ({ roomId = 1 }) => {
   const ws = useRef(null);
   const stomp = useRef(null);
   const [addElement, setAddElement] = useState();
   const [removeElement, setRemoveElement] = useState();
+  const [moveElement, setMoveElement] = useState();
+
+  const [error, setError] = useState();
+
   useEffect(() => {
     try {
       if (roomId) {
@@ -88,13 +107,15 @@ export const useCanvasSocket = ({ roomId }) => {
 
         stomp.current = Stomp.over(ws.current);
         stomp.current.reconnect_delay = 1000;
-
+        // stomp.current.debug = null;
         stomp.current.connect({}, () => {
           subScripAddElement(stomp, roomId, setAddElement);
           subScripRemoveElement(stomp, roomId, setRemoveElement);
+          subScripMoveElement(stomp, roomId, setMoveElement);
         });
       }
     } catch (e) {
+      setError(e);
       console.log(`e = ${e}`);
     }
   }, []);
@@ -110,6 +131,7 @@ export const useCanvasSocket = ({ roomId }) => {
 
         stomp.current.send(`/send/add/${roomId}`, {}, request);
       } catch (e) {
+        setError(e);
         console.log('e', e);
       }
     },
@@ -127,6 +149,25 @@ export const useCanvasSocket = ({ roomId }) => {
 
         stomp.current.send(`/send/remove/${roomId}`, {}, request);
       } catch (e) {
+        setError(e);
+        console.log('e', e);
+      }
+    },
+    [roomId],
+  );
+
+  const sendMoveElement = useCallback(
+    (removeElement) => {
+      if (!roomId) return;
+      try {
+        const request = JSON.stringify({
+          roomId: roomId,
+          element: JSON.stringify([...removeElement]),
+        });
+
+        stomp.current.send(`/send/move/${roomId}`, {}, request);
+      } catch (e) {
+        setError(e);
         console.log('e', e);
       }
     },
@@ -149,6 +190,14 @@ export const useCanvasSocket = ({ roomId }) => {
     }, [removeElements]);
   };
 
+  const useSendMoveElement = (moveElements) => {
+    useEffect(() => {
+      if (moveElements?.length > 0) {
+        sendMoveElement(moveElements);
+      }
+    }, [moveElements]);
+  };
+
   return {
     responseAddElement: addElement,
     sendAddElement: sendAddElement,
@@ -157,6 +206,11 @@ export const useCanvasSocket = ({ roomId }) => {
     responseRemoveElement: removeElement,
     sendRemoveElement: sendRemoveElement,
     useSendRemoveElement: useSendRemoveElement,
+
+    responseMoveElement: moveElement,
+    sendMoveElement: sendMoveElement,
+    useSendMoveElement: useSendMoveElement,
+    error: error,
   };
 };
 
@@ -194,4 +248,23 @@ export const useRemoveElement = (responseRemoveElement, excalidrawAPI) => {
       excalidrawAPI?.updateScene(sceneData);
     }
   }, [responseRemoveElement]);
+};
+
+export const useMoveElement = (moveElement, excalidrawAPI) => {
+  useEffect(() => {
+    console.log('moveElement', moveElement);
+    if (moveElement?.length > 0) {
+      const elementList = excalidrawAPI?.getSceneElementsIncludingDeleted();
+
+      const difference = elementList.filter((item1) => {
+        return !moveElement.some((item2) => item2.id === item1.id);
+      });
+
+      const sceneData = {
+        elements: [...difference, ...moveElement],
+      };
+
+      excalidrawAPI?.updateScene(sceneData);
+    }
+  }, [moveElement]);
 };
