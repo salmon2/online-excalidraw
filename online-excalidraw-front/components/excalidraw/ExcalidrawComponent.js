@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import * as Styled from './style';
 import cloneDeep from 'lodash/cloneDeep';
@@ -8,6 +8,8 @@ import {
   useRemoveElement,
 } from '@utils/hooks/useCanvasSocket';
 import Button from '@components/button';
+import { useSaveCanvas } from '@utils/hooks/api';
+
 const ExcalidrawComponent = ({
   setMoveElements = () => {},
   setAddElements = () => {},
@@ -66,7 +68,9 @@ const ExcalidrawComponent = ({
       return (
         prevChangeElement &&
         (prevChangeElement?.x !== changeElement?.x ||
-          prevChangeElement?.y !== changeElement?.y)
+          prevChangeElement?.y !== changeElement?.y ||
+          prevChangeElement?.width !== changeElement?.width ||
+          prevChangeElement?.height !== changeElement?.height)
       );
     });
   }, [changeElements]);
@@ -95,7 +99,21 @@ const ExcalidrawComponent = ({
   useRemoveElement(responseRemoveElement, excalidrawAPI);
   useMoveElement(responseMoveElement, excalidrawAPI);
 
-  const [canvasData, setCanvasData] = useState();
+  const { mutate, isLoading } = useSaveCanvas(
+    () => alert('success'),
+    () => alert('err'),
+  );
+
+  const saveCanvas = useCallback(() => {
+    const req = {
+      roomId: 1,
+      element: JSON.stringify(
+        excalidrawAPI?.getSceneElementsIncludingDeleted(),
+      ),
+    };
+
+    mutate(req);
+  }, [excalidrawAPI, mutate]);
 
   return (
     <>
@@ -114,7 +132,7 @@ const ExcalidrawComponent = ({
           />
         )}
       </Styled.ExcalidrawLayout>
-      <div style={{ marginTop: '15px' }}>
+      <div style={{ marginTop: '15px', display: 'flex', gap: '15px' }}>
         <Button
           onClick={() => {
             console.log(
@@ -125,6 +143,7 @@ const ExcalidrawComponent = ({
           }}>
           캔버스 데이터 보기
         </Button>
+        <Button onClick={saveCanvas}>캔버스 저장하기</Button>
       </div>
     </>
   );

@@ -1,25 +1,29 @@
 package com.example.onlineexcalidrawback.controller;
 
 import com.example.onlineexcalidrawback.domain.CanvasElementList;
+import com.example.onlineexcalidrawback.service.CanvasService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class CanvasController {
 
+    private final CanvasService canvasService;
+
+    /** controller test  */
     @GetMapping("/test")
     public String testControll(@RequestParam String msg){
         log.info("test msg = {} ", msg);
         return msg;
     }
 
+    /** socket test  */
     @MessageMapping("/send/test")
     @SendTo("/topic/test")
     public String testMessage(@Payload String msg){
@@ -47,5 +51,18 @@ public class CanvasController {
     public CanvasElementList sendMoveMessage(@Payload CanvasElementList canvasElementList) {
         log.info("move canvasElementList = {}", canvasElementList);
         return canvasElementList;
+    }
+
+    /**
+     * CRUD
+     */
+
+    @PostMapping("/canvas")
+    public CanvasElementList saveCanvas(@RequestBody CanvasElementList canvasElementList) {
+        canvasService.saveCanvas(canvasElementList);
+
+
+        return canvasElementList;
+
     }
 }
