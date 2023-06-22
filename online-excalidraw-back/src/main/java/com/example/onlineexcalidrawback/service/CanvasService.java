@@ -16,4 +16,12 @@ public class CanvasService {
     }
 
 
+    public CanvasElementList findCanvas(Long roomId) {
+        CanvasElementList findCanvasElementList =
+                canvasRepository.findById(roomId).orElseThrow(
+                        () -> new IllegalArgumentException("no such data")
+                );
+
+        return findCanvasElementList;
+    }
 }

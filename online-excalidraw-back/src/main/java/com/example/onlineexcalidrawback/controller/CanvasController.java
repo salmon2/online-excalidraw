@@ -60,9 +60,13 @@ public class CanvasController {
     @PostMapping("/canvas")
     public CanvasElementList saveCanvas(@RequestBody CanvasElementList canvasElementList) {
         canvasService.saveCanvas(canvasElementList);
-
-
         return canvasElementList;
-
     }
+
+    @GetMapping("/canvas")
+    public CanvasElementList findCanvas(@RequestParam Long roomId){
+        return canvasService.findCanvas(roomId);
+    }
+
+
 }

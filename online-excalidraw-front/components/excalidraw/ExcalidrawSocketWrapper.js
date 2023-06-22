@@ -3,7 +3,7 @@ import ExcalidrawComponent from './ExcalidrawComponent';
 
 import { useCanvasSocket } from '@utils/hooks/useCanvasSocket';
 
-const ExcalidrawSocketWrapper = () => {
+const ExcalidrawSocketWrapper = ({}) => {
   const [addElements, setAddElements] = useState();
   const [removeElements, setRemoveElements] = useState();
   const [moveElements, setMoveElements] = useState();
