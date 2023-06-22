@@ -17,12 +17,13 @@ const ExcalidrawComponent = ({
   responseAddElement,
   responseRemoveElement,
   responseMoveElement,
+  excalidrawAPI,
+  setExcalidrawAPI,
 }) => {
   const [Excalidraw, setExcalidraw] = useState(null);
 
   const [mouseButton, setMouseButton] = useState('up');
   const [onChangeFlag, setOnChangeFlag] = useState(false);
-  const [excalidrawAPI, setExcalidrawAPI] = useState(null);
 
   const [preveChangeElements, setPrevChangeElements] = useState([]);
 
@@ -132,19 +133,6 @@ const ExcalidrawComponent = ({
           />
         )}
       </Styled.ExcalidrawLayout>
-      <div style={{ marginTop: '15px', display: 'flex', gap: '15px' }}>
-        <Button
-          onClick={() => {
-            console.log(
-              'canvas',
-              excalidrawAPI?.getSceneElementsIncludingDeleted(),
-            );
-            console.log('file', excalidrawAPI?.getFiles());
-          }}>
-          캔버스 데이터 보기
-        </Button>
-        <Button onClick={saveCanvas}>캔버스 저장하기</Button>
-      </div>
     </>
   );
 };

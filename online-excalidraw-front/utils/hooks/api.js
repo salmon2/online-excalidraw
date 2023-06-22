@@ -13,7 +13,7 @@ export const useSaveCanvas = (onSuccess, onError) => {
 
   return {
     data,
-    isLoading,
+    isPosting: isLoading,
     mutate: (request) => mutate(request),
   };
 };
@@ -32,7 +32,7 @@ export const useGetCanvas = (request, onSuccess, onError) => {
       onSuccess: onSuccess,
       onError: onError,
       retry: false,
-      enabled: !!request?.roomId,
+      enabled: !!(request?.roomId && request?.excalidrawAPI),
       keepPreviousData: true,
       select: (response) => response,
     },
@@ -40,7 +40,7 @@ export const useGetCanvas = (request, onSuccess, onError) => {
 
   return {
     data: data,
-    isLoading: isLoading,
+    isGetting: isLoading,
     isError: isError,
   };
 };

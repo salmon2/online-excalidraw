@@ -3,7 +3,7 @@ import ExcalidrawComponent from './ExcalidrawComponent';
 
 import { useCanvasSocket } from '@utils/hooks/useCanvasSocket';
 
-const ExcalidrawSocketWrapper = ({}) => {
+const ExcalidrawSocketWrapper = ({ excalidrawAPI, setExcalidrawAPI }) => {
   const [addElements, setAddElements] = useState();
   const [removeElements, setRemoveElements] = useState();
   const [moveElements, setMoveElements] = useState();
@@ -34,6 +34,8 @@ const ExcalidrawSocketWrapper = ({}) => {
         responseAddElement={responseAddElement?.element}
         responseRemoveElement={responseRemoveElement?.element}
         responseMoveElement={responseMoveElement?.element}
+        excalidrawAPI={excalidrawAPI}
+        setExcalidrawAPI={setExcalidrawAPI}
       />
     </>
   );
