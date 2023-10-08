@@ -107,7 +107,7 @@ export const useCanvasSocket = ({ roomId = 1 }) => {
 
         stomp.current = Stomp.over(ws.current);
         stomp.current.reconnect_delay = 1000;
-        // stomp.current.debug = null;
+        stomp.current.debug = null;
         stomp.current.connect({}, () => {
           subScripAddElement(stomp, roomId, setAddElement);
           subScripRemoveElement(stomp, roomId, setRemoveElement);

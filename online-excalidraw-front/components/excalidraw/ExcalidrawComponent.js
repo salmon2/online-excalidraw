@@ -19,6 +19,7 @@ const ExcalidrawComponent = ({
   responseMoveElement,
   excalidrawAPI,
   setExcalidrawAPI,
+  mouseCallback = () => {},
 }) => {
   const [Excalidraw, setExcalidraw] = useState(null);
 
@@ -100,21 +101,11 @@ const ExcalidrawComponent = ({
   useRemoveElement(responseRemoveElement, excalidrawAPI);
   useMoveElement(responseMoveElement, excalidrawAPI);
 
-  const { mutate, isLoading } = useSaveCanvas(
-    () => alert('success'),
-    () => alert('err'),
-  );
-
-  const saveCanvas = useCallback(() => {
-    const req = {
-      roomId: 1,
-      element: JSON.stringify(
-        excalidrawAPI?.getSceneElementsIncludingDeleted(),
-      ),
-    };
-
-    mutate(req);
-  }, [excalidrawAPI, mutate]);
+  useEffect(() => {
+    console.log('if(changeElements)', changeElements);
+    if (changeElements?.length <= 0) return;
+    mouseCallback && mouseCallback();
+  }, [changeElements]);
 
   return (
     <>

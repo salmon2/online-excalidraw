@@ -4,7 +4,11 @@ import ExcalidrawComponent from './ExcalidrawComponent';
 import { useCanvasSocket } from '@utils/hooks/useCanvasSocket';
 import { useRouter } from 'next/router';
 
-const ExcalidrawSocketWrapper = ({ excalidrawAPI, setExcalidrawAPI }) => {
+const ExcalidrawSocketWrapper = ({
+  mouseCallback = () => {},
+  excalidrawAPI,
+  setExcalidrawAPI,
+}) => {
   const {
     query: { roomId },
   } = useRouter();
@@ -19,6 +23,7 @@ const ExcalidrawSocketWrapper = ({ excalidrawAPI, setExcalidrawAPI }) => {
     useSendRemoveElement,
     responseMoveElement,
     useSendMoveElement,
+
     error,
   } = useCanvasSocket({
     roomId: Number(roomId),
@@ -32,6 +37,7 @@ const ExcalidrawSocketWrapper = ({ excalidrawAPI, setExcalidrawAPI }) => {
     <>
       {error && error}
       <ExcalidrawComponent
+        mouseCallback={mouseCallback}
         setAddElements={setAddElements}
         setRemoveElements={setRemoveElements}
         setMoveElements={setMoveElements}

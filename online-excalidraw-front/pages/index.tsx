@@ -1,4 +1,3 @@
-import ExcalidrawSocketWrapper from '@components/excalidraw/ExcalidrawSocketWrapper';
 import ExcalidrawCRUDComponent from '@components/excalidraw/ExcalidrawCRUDComponent';
 import * as Styled from '@components/layout/style';
 

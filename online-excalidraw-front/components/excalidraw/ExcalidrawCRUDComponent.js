@@ -38,10 +38,7 @@ const ExcalidrawCRUDComponent = () => {
     (err) => console.log('err', err),
   );
 
-  const { mutate, isPosting } = useSaveCanvas(
-    () => alert('success'),
-    () => alert('err'),
-  );
+  const { mutate, isPosting } = useSaveCanvas();
 
   const saveCanvas = useCallback(() => {
     const req = {
@@ -51,8 +48,21 @@ const ExcalidrawCRUDComponent = () => {
       ),
     };
 
-    mutate(req);
+    mutate(req, () => alert('success'));
   }, [excalidrawAPI, mutate, roomId]);
+  const saveCanvasMouseCallback = useCallback(() => {
+    console.log('isPosting', isPosting);
+    if (isPosting) return;
+
+    const req = {
+      roomId: roomId,
+      element: JSON.stringify(
+        excalidrawAPI?.getSceneElementsIncludingDeleted(),
+      ),
+    };
+
+    mutate(req);
+  }, [excalidrawAPI, mutate, roomId, isPosting]);
 
   useEffect(() => {
     if (isReady && !roomId) {
@@ -67,6 +77,7 @@ const ExcalidrawCRUDComponent = () => {
           <ExcalidrawSocketWrapper
             excalidrawAPI={excalidrawAPI}
             setExcalidrawAPI={setExcalidrawAPI}
+            mouseCallback={saveCanvasMouseCallback}
           />
           <div style={{ marginTop: '15px', display: 'flex', gap: '15px' }}>
             <Button
