@@ -1,41 +1,25 @@
 {
   "env": {
-    "browser": true, /* 브라우저 환경에서 실행되는 코드 */
-    "node": true, /* Node.js 환경에서 실행되는 코드 */
-    "es2021": true /* ECMAScript 2021(ES12) */
+    "browser": true,
+    "node": true,
+    "es2021": true
   },
   "extends": [
-    "eslint:recommended", /* 기본적인 ESLint 구성 설정*/
-    "plugin:react/recommended", /* React에 대한 ESLint 권장 설정 */
-    "next/core-web-vitals", /* Next.js의 Core Web Vitals 설정 */
-    "plugin:storybook/recommended" /* Storybook에 대한 ESLint 권장 설정 */
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "next/core-web-vitals"
   ],
-  "overrides": [], /* 특정 파일 또는 파일 패턴에 대한 추가적인 ESLint 규칙 재정의 */
+  "overrides": [],
   "parserOptions": {
-    "ecmaVersion": "latest", /* ECMAScript 최신 버전을 사용 */
-    "sourceType": "module" /* 모듈 형식을 사용 */
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
-  "plugins": [
-    "react" /* React 플러그인을 활성화 */
-  ],
+  "plugins": ["react"],
   "rules": {
-    "no-unused-vars": "error", /* 사용되지 않은 변수를 오류로 표시 */
-    "react/prop-types": "off", /* propTypes를 정의하지 않아도 오류로 표시 */
-    "react/react-in-jsx-scope": 0, /* JSX를 사용할 때 React가 반드시 임포트 */
-    "react/no-unknown-property": [ /* 알 수 없는 프로퍼티를 사용할 때 오류 단) "css"와 "tw" 프로퍼티는 무시 */
-      "error",
-      {
-        "ignore": [
-          "css", /* "css" 프로퍼티를 무시 */
-          "tw" /* "tw" 프로퍼티를 무시 */
-        ]
-      }
-    ],
-    "react/display-name": [ /* 컴포넌트의 display 이름을 검사X */
-      0,
-      {
-        "ignoreTranspilerName": true
-      }
-    ]
+    "no-unused-vars": "warn",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": 0,
+    "react/no-unknown-property": ["error", { "ignore": ["css", "tw"] }],
+    "react/display-name": [0, { "ignoreTranspilerName": true }]
   }
 }

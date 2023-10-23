@@ -1,11 +1,11 @@
-import ExcalidrawCRUDComponent from '@components/excalidraw/ExcalidrawCRUDComponent';
+import ExcalidrawCRUDComponentTSX from '@components/excalidraw/ExcalidrawCRUDComponentTSX';
 import * as Styled from '@components/layout/style';
 
 export default function Home() {
   return (
     <Styled.Layout>
       <div style={{ width: '50%', height: '50%' }}>
-        <ExcalidrawCRUDComponent />
+        <ExcalidrawCRUDComponentTSX />
       </div>
     </Styled.Layout>
   );

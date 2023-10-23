@@ -53,6 +53,8 @@
     "@storybook/nextjs": "^7.0.18",
     "@storybook/react": "^7.0.18",
     "@storybook/testing-library": "^0.0.14-next.2",
+    "@types/sockjs-client": "^1.5.3",
+    "@types/stompjs": "^2.3.7",
     "ajv": "^7.2.4",
     "eslint-plugin-storybook": "^0.6.12",
     "storybook": "^7.0.18"

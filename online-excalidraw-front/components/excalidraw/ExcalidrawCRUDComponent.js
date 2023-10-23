@@ -3,6 +3,7 @@ import ExcalidrawSocketWrapper from './ExcalidrawSocketWrapper';
 import { useGetCanvas, useSaveCanvas } from '@utils/hooks/api';
 import { useRouter } from 'next/router';
 import Button from '@components/button';
+import ExcalidrawSocketWrapperTSX from './ExcalidrawSocketWrapperTSX';
 
 const ExcalidrawCRUDComponent = () => {
   const {
@@ -51,7 +52,6 @@ const ExcalidrawCRUDComponent = () => {
     mutate(req, () => alert('success'));
   }, [excalidrawAPI, mutate, roomId]);
   const saveCanvasMouseCallback = useCallback(() => {
-    console.log('isPosting', isPosting);
     if (isPosting) return;
 
     const req = {
@@ -74,7 +74,7 @@ const ExcalidrawCRUDComponent = () => {
     <>
       {roomId && (
         <>
-          <ExcalidrawSocketWrapper
+          <ExcalidrawSocketWrapperTSX
             excalidrawAPI={excalidrawAPI}
             setExcalidrawAPI={setExcalidrawAPI}
             mouseCallback={saveCanvasMouseCallback}

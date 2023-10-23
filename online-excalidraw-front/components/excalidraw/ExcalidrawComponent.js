@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import * as Styled from './style';
 import cloneDeep from 'lodash/cloneDeep';
@@ -7,8 +7,6 @@ import {
   useMoveElement,
   useRemoveElement,
 } from '@utils/hooks/useCanvasSocket';
-import Button from '@components/button';
-import { useSaveCanvas } from '@utils/hooks/api';
 
 const ExcalidrawComponent = ({
   setMoveElements = () => {},
@@ -55,6 +53,7 @@ const ExcalidrawComponent = ({
       const prevChangeElement = preveChangeElements.find(
         (prevElement) => prevElement?.id === changeElement?.id,
       );
+
       return (
         prevChangeElement?.isDeleted !== changeElement?.isDeleted &&
         changeElement?.isDeleted === true
@@ -83,12 +82,10 @@ const ExcalidrawComponent = ({
   }, [changeElements]);
 
   useEffect(() => {
-    // console.log('addElements', addElements);
     setAddElements(addElements);
   }, [addElements]);
 
   useEffect(() => {
-    // console.log('removeElements', removeElements);
     setRemoveElements(removeElements);
   }, [removeElements]);
 

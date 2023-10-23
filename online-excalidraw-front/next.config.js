@@ -1,7 +1,7 @@
 // next.config.js
 const withTwin = require('./withTwin.js');
 
-module.exports = (phase) => {
+module.exports = () => {
   return withTwin({
     reactStrictMode: false,
     swcMinify: true,

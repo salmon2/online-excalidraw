@@ -3,6 +3,7 @@ import ExcalidrawComponent from './ExcalidrawComponent';
 
 import { useCanvasSocket } from '@utils/hooks/useCanvasSocket';
 import { useRouter } from 'next/router';
+import ExcalidrawComponentTSX from './ExcalidrawComponentTSX';
 
 const ExcalidrawSocketWrapper = ({
   mouseCallback = () => {},
@@ -36,7 +37,7 @@ const ExcalidrawSocketWrapper = ({
   return (
     <>
       {error && error}
-      <ExcalidrawComponent
+      <ExcalidrawComponentTSX
         mouseCallback={mouseCallback}
         setAddElements={setAddElements}
         setRemoveElements={setRemoveElements}
