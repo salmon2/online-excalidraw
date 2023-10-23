@@ -123,6 +123,7 @@ export const useCanvasSocket = ({ roomId = 1 }) => {
   const sendAddElement = useCallback(
     (addElement) => {
       if (!roomId) return;
+      console.log('addElement', addElement);
       try {
         const request = JSON.stringify({
           roomId: roomId,
@@ -141,6 +142,7 @@ export const useCanvasSocket = ({ roomId = 1 }) => {
   const sendRemoveElement = useCallback(
     (removeElement) => {
       if (!roomId) return;
+      console.log('removeElement', addElement);
       try {
         const request = JSON.stringify({
           roomId: roomId,
@@ -159,6 +161,7 @@ export const useCanvasSocket = ({ roomId = 1 }) => {
   const sendMoveElement = useCallback(
     (removeElement) => {
       if (!roomId) return;
+      console.log('moveElement', addElement);
       try {
         const request = JSON.stringify({
           roomId: roomId,
